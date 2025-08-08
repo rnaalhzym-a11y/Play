@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>⚡️ HackTool Pro - جهازك تحت السيطرة ⚡️</title>
+<style>
+  body {
+    background: #000;
+    color: #0f0;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0; padding: 20px;
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 3em;
+    margin-bottom: 15px;
+    user-select: none;
+    text-shadow: 0 0 15px #0f0;
+  }
+  #output {
+    background: #111;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px #0f0;
+    width: 90%;
+    max-width: 700px;
+    font-size: 1.1em;
+    white-space: pre-wrap;
+    line-height: 1.3;
+    min-height: 300px;
+    overflow-y: auto;
+  }
+  button {
+    margin-top: 20px;
+    background: #0f0;
+    border: none;
+    padding: 15px 50px;
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #000;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    user-select: none;
+  }
+  button:hover {
+    background: #3f3;
+  }
+  #locationStatus {
+    margin-top: 15px;
+    font-weight: 700;
+    color: #0f0;
+    user-select: none;
+  }
+  #controlPanel {
+    background: #111;
+    border-radius: 15px;
+    box-shadow: 0 0 25px #0f0;
+    width: 90%;
+    max-width: 700px;
+    margin-top: 30px;
+    padding: 15px;
+    display: none;
+    flex-direction: column;
+    font-family: monospace;
+    font-size: 0.95em;
+    height: 400px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+  #extraSection {
+    background: #111;
+    margin-top: 30px;
+    padding: 15px;
+    width: 90%;
+    max-width: 700px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #0f0;
+    display: none;
+    flex-direction: column;
+    font-family: monospace;
+    font-size: 0.9em;
+    height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+  #linkText {
+    margin-bottom: 10px;
+    user-select: all;
+    color: #0f0;
+  }
+  #leakLink {
+    background: #222;
+    padding: 10px 15px;
+    border-radius: 12px;
+    color: #0f0;
+    font-weight: 700;
+    user-select: all;
+  }
+  #copyMsg {
+    margin-top: 10px;
+    color: #ff0;
+    user-select: none;
+  }
+  #leakMsg {
+    margin-top: 15px;
+    color: #f00;
+    font-weight: 900;
+    text-shadow: 0 0 5px #f00;
+    user-select: none;
+  }
+  #showLeakBtn {
+    background: #0f0;
+    border: none;
+    padding: 12px 30px;
+    font-size: 1.1em;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    align-self: flex-start;
+    margin-top: 15px;
+    transition: background 0.3s ease;
+  }
+  #showLeakBtn:hover {
+    background: #3f3;
+  }
+</style>
+</head>
+<body>
+
+<h1>⚡️ HackTool Pro - جهازك تحت السيطرة ⚡️</h1>
+
+<button id="startBtn">ابدأ فحص الجهاز</button>
+
+<div id="output">اضغط "ابدأ فحص الجهاز" لبدء العملية...</div>
+<div id="locationStatus"></div>
+<div id="controlPanel"></div>
+
+<div id="extraSection" style="display:none; flex-direction: column;">
+  <div id="linkText">انسخ هذا الرابط وضعّه في البحث:</div>
+  <div id="leakLink"></div>
+  <div id="copyMsg"></div>
+  <div id="leakMsg"></div>
+</div>
+
+<script>
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  const fakeHackCodes = [
+    "فتح منفذ الشبكة 8080 ...",
+    "جاري تحليل حركة البيانات ...",
+    "تحميل مكتبة التجسس v2.3 ...",
+    "تم حقن الروت ...",
+    "جاري كسر تشفير البروتوكولات ...",
+    "اختراق قواعد البيانات ...",
+    "تجاوز جدار الحماية ...",
+    "فتح مسارات التحكم عن بعد ...",
+    "جلب ملفات تعريف الارتباط ...",
+    "تسجيل ضغطات المفاتيح ...",
+    "اختراق كاميرا الجهاز ...",
+    "تفعيل مراقبة المايكروفون ...",
+    "تحميل فيروسات صامتة ...",
+    "تحديث قواعد بيانات التجسس ...",
+    "تم السيطرة على النظام بنجاح.",
+    "بدء استخراج البيانات الحساسة ...",
+    "جاري إرسال البيانات إلى الخادم ...",
+    "إنشاء نفق اتصال مشفر ...",
+    "تثبيت برمجيات مراقبة ...",
+    "تشغيل عمليات الإخفاء ...",
+    "إلغاء تنشيط برامج الحماية ...",
+    "فتح بوابة الدخول الخلفية ...",
+    "جاري تعطيل جدران الحماية ...",
+    "مسح أثار الاختراق ...",
+    "إعادة تشغيل الخدمات الحيوية ...",
+    "إنهاء المهمة بنجاح."
+  ];
+
+  const fakeLink = "https://darkzone-leak.net/secret";
+
+  async function hackSequence() {
+    const output = document.getElementById('output');
+    const locationStatus = document.getElementById('locationStatus');
+    const controlPanel = document.getElementById('controlPanel');
+    const extraSection = document.getElementById('extraSection');
+    const leakLink = document.getElementById('leakLink');
+    const copyMsg = document.getElementById('copyMsg');
+    const leakMsg = document.getElementById('leakMsg');
+
+    output.textContent = '';
+    locationStatus.textContent = '🚀 تم الوصول إلى الموقع: 25.12345, 45.67890';
+    controlPanel.style.display = 'flex';
+    extraSection.style.display = 'none';
+    copyMsg.textContent = '';
+    leakMsg.textContent = '';
+    leakLink.textContent = '';
+
+    // عرض معلومات الجهاز الحقيقية
+    output.textContent += `نظام التشغيل: ${navigator.platform}\n`;
+    await sleep(500);
+    output.textContent += `متصفح الإنترنت: ${navigator.userAgent}\n`;
+    await sleep(500);
+    output.textContent += `عدد أنوية المعالج: ${navigator.hardwareConcurrency || 'غير معروف'}\n`;
+    await sleep(500);
+    output.textContent += `ذاكرة الجهاز (تقديرية): ${navigator.deviceMemory || 'غير معروف'} جيجابايت\n`;
+    await sleep(500);
+    output.textContent += `دقة الشاشة: ${window.screen.width} × ${window.screen.height}\n`;
+    await sleep(800);
+
+    // عرض الأكواد المزيفة تدريجياً
+    for (const line of fakeHackCodes) {
+      output.textContent += line + '\n';
+      await sleep(400);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    // إضافة زر لمسح المعلومات (المقلب)
+    const btn = document.createElement('button');
+    btn.id = "showLeakBtn";
+    btn.textContent = "هل اضغط لمسح المعلومات";
+    controlPanel.appendChild(btn);
+
+    
+btn.onclick = () => {
+  alert("⚠️ تم التسريب! لا تحاول التراجع 😈");
+  window.location.href = "indbex.html";
+};
+}
+  document.getElementById('startBtn').addEventListener('click', hackSequence);
+</script>
+
+</body>
+</html>
